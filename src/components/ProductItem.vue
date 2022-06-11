@@ -1,44 +1,43 @@
 <template>
   <div class="wrapper">
     <div class="img-container">
-      <img class="offer-img" :src="offer.photo" />
+      <img class="product-img" :src="item.photo" />
     </div>
-    <div class="offer-info">
-      <div class="offer-text">
-        <h1>{{ offerTitle }}</h1>
-        <h2>{{ offerDescription }}</h2>
+    <div class="product-info">
+      <div class="product-text">
+        <h1>{{ itemTitle }}</h1>
+        <h2>{{ itemDescription }}</h2>
       </div>
-      <div class="offer-price-btn">
-        <h3>{{ offer.priceWithDiscount }}$</h3>
+      <div class="product-price-btn">
+        <h3>{{ item.priceWithDiscount }}$</h3>
         <button type="button">Comprar</button>
       </div>
     </div>
   </div>
-  <!-- <p>{{ offer }}</p> -->
-  <!-- <br /> -->
+  <!-- <p>{{ item }}</p> -->
 </template>
 
 <script>
 export default {
-  name: "OfferItem",
+  name: "ProductItem",
   props: {
-    offer: {
+    item: {
       required: true,
     },
   },
   computed: {
-    offerTitle() {
-      const offerTitle = this.offer.title;
-      if (offerTitle) {
-        return `${offerTitle.charAt(0).toUpperCase() + offerTitle.slice(1)}!`;
+    itemTitle() {
+      const itemTitle = this.item.title;
+      if (itemTitle) {
+        return `${itemTitle.charAt(0).toUpperCase() + itemTitle.slice(1)}!`;
       }
       return "";
     },
-    offerDescription() {
-      const offerDescription = this.offer.description;
-      if (offerDescription) {
+    itemDescription() {
+      const itemDescription = this.item.description;
+      if (itemDescription) {
         return `${
-          offerDescription.charAt(0).toUpperCase() + offerDescription.slice(1)
+          itemDescription.charAt(0).toUpperCase() + itemDescription.slice(1)
         }!`;
       }
       return "";
@@ -67,28 +66,28 @@ export default {
   width: 350px;
 }
 
-.offer-img {
+.product-img {
   height: 100%;
 
   border-radius: var(--border-radius) 0 0 var(--border-radius);
 }
 
-.offer-info {
+.product-info {
   margin-left: 0.5em;
 }
 
 /* 
-.offer-img {
+.product-img {
   float: left;
   height: 420px;
   width: 327px;
 }
 
-.offer-img img {
+.product-img img {
   border-radius: 7px 0 0 7px;
 }
 
-.offer-info {
+.product-info {
   float: left;
   height: 420px;
   width: 327px;
@@ -96,24 +95,24 @@ export default {
   background-color: #ffffff;
 }
 
-.offer-text {
+.product-text {
   height: 300px;
   width: 327px;
 }
 
-.offer-text h1 {
+.product-text h1 {
   margin: 0 0 0 38px;
   padding-top: 52px;
   font-size: 34px;
   color: #474747;
 }
 
-.offer-text h1,
-.offer-price-btn p {
+.product-text h1,
+.product-price-btn p {
   font-family: "Bentham", serif;
 }
 
-.offer-text h2 {
+.product-text h2 {
   margin: 0 0 47px 38px;
   font-size: 13px;
   font-family: "Raleway", sans-serif;
@@ -123,7 +122,7 @@ export default {
   letter-spacing: 0.2em;
 }
 
-.offer-text p {
+.product-text p {
   height: 125px;
   margin: 0 0 0 38px;
   font-family: "Playfair Display", serif;
@@ -134,14 +133,14 @@ export default {
   overflow: hidden;
 }
 
-.offer-price-btn {
+.product-price-btn {
   height: 103px;
   width: 327px;
   margin-top: 17px;
   position: relative;
 }
 
-.offer-price-btn p {
+.product-price-btn p {
   display: inline-block;
   position: absolute;
   top: -13px;
@@ -160,7 +159,7 @@ span {
   font-size: 34px;
 }
 
-.offer-price-btn button {
+.product-price-btn button {
   float: right;
   display: inline-block;
   height: 50px;
@@ -180,7 +179,7 @@ span {
   outline: none;
 }
 
-.offer-price-btn button:hover {
+.product-price-btn button:hover {
   background-color: #79b0a1;
 } */
 

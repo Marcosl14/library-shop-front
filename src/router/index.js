@@ -5,6 +5,7 @@ import ContactView from "../views/ContactView.vue";
 import UserView from "../views/UserView.vue";
 import LogInView from "../views/LogInView.vue";
 import CartView from "../views/CartView.vue";
+import RegisterView from "../views/RegisterView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +39,11 @@ const router = createRouter({
       path: "/carrito",
       name: "cart",
       component: CartView,
+    },
+    {
+      path: "/registro-nuevo-usuario",
+      name: "register",
+      component: RegisterView,
     },
     // {
     //   path: "/productos",

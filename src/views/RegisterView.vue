@@ -1,9 +1,8 @@
 <template>
   <main>
     <div class="main-container">
-      <h1>Iniciar Sesión!!!</h1>
-      <!-- formulario de inicio de sesión u otra vista con formulario de registro -->
-      <RouterLink to="/registro-nuevo-usuario">Registrarse</RouterLink>
+      <h1>Registro!!!</h1>
+      <!-- poner nombre usuario -->
     </div>
   </main>
 </template>
