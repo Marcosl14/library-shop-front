@@ -8,17 +8,24 @@ import { RouterLink, RouterView } from "vue-router";
       <nav>
         <RouterLink to="/">Inicio</RouterLink>
         <RouterLink to="/productos">Productos</RouterLink>
-        <RouterLink to="/pepe">Contactos</RouterLink>
+        <RouterLink to="/contacto">Contacto</RouterLink>
       </nav>
     </div>
     <div>
       <nav>
-        <RouterLink to="/otro">{{ userName }}</RouterLink>
-        <!-- acá va a ir el carrito -->
+        <RouterLink v-if="userName" to="/usuario">{{ userName }}</RouterLink>
+        <RouterLink v-else to="/iniciar-sesion">Iniciar Sesión</RouterLink>
+        <RouterLink to="/carrito"
+          ><i class="fa-solid fa-cart-shopping fa-1x"></i
+        ></RouterLink>
       </nav>
     </div>
   </header>
-  <RouterView />
+  <div class="main-view">
+    <RouterView class="navigation-body" />
+  </div>
+
+  <h1>comment: aca falta el footer</h1>
 </template>
 
 <script>
@@ -75,13 +82,6 @@ a,
   transition: 0.4s;
 }
 
-@media (hover: hover) {
-  a:hover {
-    border-color: var(--color-green);
-    background-color: var(--color-green);
-  }
-}
-
 nav {
   width: 100%;
   font-size: 12px;
@@ -101,6 +101,8 @@ nav a {
   margin-right: 0.5rem;
   padding: 0.5rem 0.5rem;
 
+  background-color: var(--color-yellow);
+
   border-style: solid;
   border-width: 1px;
   border-color: var(--color-black);
@@ -109,6 +111,17 @@ nav a {
 
 nav div {
   height: 100%;
+}
+
+.navigation-body {
+  margin-top: 0.5em;
+}
+
+@media (hover: hover) {
+  a:hover {
+    border-color: var(--color-green);
+    background-color: var(--color-green);
+  }
 }
 
 @media (min-width: 1024px) {
@@ -141,10 +154,6 @@ nav div {
     margin-right: 1em;
   }
 
-  main {
-    width: 100vw;
-  }
-
   header .wrapper {
     display: flex;
     place-items: flex-start;
@@ -163,6 +172,15 @@ nav div {
 
     display: flex;
     flex-direction: row;
+  }
+
+  .main-view {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+
+    padding-left: 1rem;
+    padding-right: 1.5rem;
   }
 }
 </style>

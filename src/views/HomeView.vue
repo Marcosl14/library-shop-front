@@ -1,7 +1,10 @@
 <template>
   <main>
-    <div class="offer-items-container">
-      <OfferItem v-for="offer in offers" :key="offer.id" :offer="offer" />
+    <div class="main-container">
+      <h1>Combos en oferta!!!</h1>
+      <div class="offer-items-container">
+        <OfferItem v-for="offer in offers" :key="offer.id" :offer="offer" />
+      </div>
     </div>
   </main>
 </template>
@@ -24,8 +27,13 @@ export default {
 </script>
 
 <style scoped>
+.main-container h1 {
+  margin-bottom: 0.5em;
+}
+
 .offer-items-container {
-  padding-left: 1rem;
-  padding-right: 1rem;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 </style>

@@ -6,6 +6,8 @@
   --color-yellow: #eda656;
   --color-brown: #584b38;
   --color-black: black;
+
+  --border-radius: 7px;
 }
 
 *,
