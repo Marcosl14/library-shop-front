@@ -147,7 +147,7 @@ nav div {
     justify-content: space-between;
 
     width: 100vw;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0rem 0.5rem 1rem;
   }
 
   header div:last-of-type {
@@ -176,8 +176,10 @@ nav div {
 
   .main-view {
     min-height: 100vh;
+    min-width: 100vw;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
 
     padding-left: 1rem;
     padding-right: 1.5rem;

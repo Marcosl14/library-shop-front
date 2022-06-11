@@ -4,6 +4,7 @@
       <h1>Combos en oferta!!!</h1>
       <div class="offer-items-container">
         <OfferItem v-for="offer in offers" :key="offer.id" :offer="offer" />
+        <!-- comment: falta el tachar el precio del producto y poner el precio nuevo con descuento-->
       </div>
     </div>
   </main>
