@@ -6,6 +6,7 @@ import UserView from "../views/UserView.vue";
 import LogInView from "../views/LogInView.vue";
 import CartView from "../views/CartView.vue";
 import RegisterView from "../views/RegisterView.vue";
+import ConfirmRegistration from "../views/ConfirmRegistration.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,6 +45,11 @@ const router = createRouter({
       path: "/registro-nuevo-usuario",
       name: "register",
       component: RegisterView,
+    },
+    {
+      path: "/confirmar/:id",
+      name: "confirm-registration",
+      component: ConfirmRegistration,
     },
     // {
     //   path: "/productos",

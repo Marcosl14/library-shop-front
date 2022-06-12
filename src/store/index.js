@@ -42,11 +42,11 @@ export default createStore({
         });
     },
     setUserData() {
-      // localStorage.setItem(
-      //   "token",
-      //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJlbWFpbCI6Im1hcmNvcy5naW9yZGFuby5sMTRAZ29vZ2xlbWFpbC5jb20iLCJyZWdpc3RyeVVVSUQiOiI0NzgwMmVkOC0wMTNmLTRiOWUtYTIyZC04ZWVkOWQ0ZWY1NTMiLCJpYXQiOjE2NTMxMzk2NzIsImV4cCI6MTY1MzEzOTczMn0.5UMTmGkHUrbEZF7ZvfKFfPrpxRkfpa-R6ueXfGzcJ0k"
-      // );
       const token = localStorage.getItem("token");
+
+      if (!token || token == "") {
+        return;
+      }
 
       userService
         .getData(token)
@@ -59,21 +59,13 @@ export default createStore({
     },
   },
   actions: {
-    // getUserData() {
-    //   // localStorage.setItem(
-    //   //   "token",
-    //   //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJlbWFpbCI6Im1hcmNvcy5naW9yZGFuby5sMTRAZ29vZ2xlbWFpbC5jb20iLCJyZWdpc3RyeVVVSUQiOiI0NzgwMmVkOC0wMTNmLTRiOWUtYTIyZC04ZWVkOWQ0ZWY1NTMiLCJpYXQiOjE2NTMxMzk2NzIsImV4cCI6MTY1MzEzOTczMn0.5UMTmGkHUrbEZF7ZvfKFfPrpxRkfpa-R6ueXfGzcJ0k"
-    //   // );
-    //   const token = localStorage.getItem("token");
-    //   userService
-    //     .getData(token)
-    //     .then((res) => {
-    //       console.log(res.data);
-    //     })
-    //     .catch((err) => {
-    //       console.log(err.response.data.statusCode, err.response.data.message);
-    //     });
-    // },
+    login({ commit }) {
+      commit("setUserData");
+    },
+    logout() {
+      localStorage.removeItem("token");
+      this.state.userData = {};
+    },
   },
   modules: {},
 });

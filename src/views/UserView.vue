@@ -2,19 +2,27 @@
   <main>
     <div class="main-container">
       <h1>Usuario!!!</h1>
+      <button @click="userLogout">Cerrar Sesión</button>
       <!-- poner nombre usuario -->
     </div>
   </main>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   computed: {
     ...mapGetters({
       items: "getItems",
     }),
+  },
+  methods: {
+    ...mapActions(["logout"]),
+    userLogout() {
+      this.logout();
+      this.$router.push({ name: "offers" });
+    },
   },
 };
 </script>

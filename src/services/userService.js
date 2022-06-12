@@ -1,7 +1,8 @@
 import axios from "axios";
+import constants from "./zServiceConstants";
 
 const APIclient = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: constants.url,
 });
 
 export default {
@@ -13,23 +14,22 @@ export default {
     return APIclient.get(`/users`, config);
   },
 
-  // postOperation(user, type, cripto, amount, money, dateTime) {
-  //   return APIclient.post("/transactions", {
-  //     user_id: user,
-  //     action: type,
-  //     crypto_code: cripto,
-  //     crypto_amount: amount,
-  //     money: money.toFixed(2),
-  //     datetime: dateTime,
-  //   });
-  // },
-  // deleteOperation(id) {
-  //   return APIclient.delete("/transactions/" + id);
-  // },
-  // getOperation(id) {
-  //   return APIclient.get("/transactions/" + id);
-  // },
-  // editOperation(movement) {
-  //   return APIclient.patch("/transactions/" + movement._id, movement);
-  // },
+  login(email, password) {
+    return APIclient.post(`auth/login`, { email, password });
+  },
+
+  register(email, password, passwordConfirmation, firstname, lastname, phone) {
+    return APIclient.post(`auth/register`, {
+      email,
+      password,
+      passwordConfirmation,
+      firstname,
+      lastname,
+      phone,
+    });
+  },
+
+  confirmRegistration(registryUUID) {
+    return APIclient.post(`auth/confirm-registration`, { registryUUID });
+  },
 };
