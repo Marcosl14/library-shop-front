@@ -1,7 +1,8 @@
 import axios from "axios";
+import constants from "./zServiceConstants";
 
 const APIclient = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: constants.url,
 });
 
 export default {

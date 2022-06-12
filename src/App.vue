@@ -114,6 +114,7 @@ nav div {
 }
 
 .navigation-body {
+  width: 100%;
   margin-top: 0.5em;
 }
 
