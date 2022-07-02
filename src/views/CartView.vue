@@ -2,19 +2,37 @@
   <main>
     <div class="main-container">
       <h1>Carrito!!!</h1>
+      {{ cart }}
       <!-- poner nombre usuario -->
     </div>
   </main>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import cartService from "../services/cartService";
 
 export default {
-  computed: {
-    ...mapGetters({
-      items: "getItems",
-    }),
+  data() {
+    return {
+      error: "",
+      cart: [],
+    };
+  },
+  methods: {
+    getCart() {
+      cartService
+        .getCurrentCart()
+        .then((res) => {
+          this.cart = res.data;
+        })
+        .catch((err) => {
+          console.log(err.response.data.statusCode, err.response.data.message);
+          this.error = err.response.data.message;
+        });
+    },
+  },
+  created: function () {
+    this.getCart();
   },
 };
 </script>
