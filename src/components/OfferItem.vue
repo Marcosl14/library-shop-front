@@ -10,8 +10,9 @@
       </div>
       <div class="offer-price-btn">
         <h3>{{ offer.priceWithDiscount }}$</h3>
-        <button type="button">Comprar</button>
+        <button type="button" @click="buy(offer.id)">Comprar</button>
       </div>
+      <h1>falta tachar el precio</h1>
     </div>
   </div>
   <!-- <p>{{ offer }}</p> -->
@@ -42,6 +43,11 @@ export default {
         }!`;
       }
       return "";
+    },
+  },
+  methods: {
+    buy(id) {
+      this.$router.push(`/oferta/${id}`);
     },
   },
 };

@@ -23,4 +23,12 @@ export default {
 
     return APIclient.get(`/cart`, config);
   },
+
+  add(type, product_id, quantity) {
+    const config = {
+      headers: { Authorization: `Bearer ${getUserToken()}` },
+    };
+
+    return APIclient.post(`/cart`, { type, product_id, quantity }, config);
+  },
 };

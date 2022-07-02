@@ -21,4 +21,8 @@ export default {
 
     return APIclient.get(`/items`, { params });
   },
+
+  getOne(id) {
+    return APIclient.get(`/items/${id}`);
+  },
 };
