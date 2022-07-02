@@ -7,6 +7,8 @@ import LogInView from "../views/LogInView.vue";
 import CartView from "../views/CartView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import ConfirmRegistration from "../views/ConfirmRegistration.vue";
+import ConfirmEmailChange from "../views/ConfirmEmailChange.vue";
+import PasswordForgottenView from "../views/PasswordForgottenView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -47,9 +49,19 @@ const router = createRouter({
       component: RegisterView,
     },
     {
+      path: "/password-olvidada",
+      name: "password-forgotten",
+      component: PasswordForgottenView,
+    },
+    {
       path: "/confirmar/:id",
       name: "confirm-registration",
       component: ConfirmRegistration,
+    },
+    {
+      path: "/confirmar-email/:id",
+      name: "confirm-email",
+      component: ConfirmEmailChange,
     },
     // {
     //   path: "/productos",

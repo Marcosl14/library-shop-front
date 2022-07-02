@@ -13,7 +13,9 @@ import { RouterLink, RouterView } from "vue-router";
     </div>
     <div>
       <nav>
-        <RouterLink v-if="userName" to="/usuario">{{ userName }}</RouterLink>
+        <RouterLink v-if="userData.firstname" to="/usuario"
+          >Bienvenido {{ userData.firstname }}!</RouterLink
+        >
         <RouterLink v-else to="/iniciar-sesion">Iniciar Sesión</RouterLink>
         <RouterLink to="/carrito"
           ><i class="fa-solid fa-cart-shopping fa-1x"></i
@@ -33,24 +35,14 @@ import { mapMutations, mapGetters } from "vuex";
 
 export default {
   methods: {
-    ...mapMutations(["setItems", "setOffers", "setUserData"]),
+    ...mapMutations(["setOffers", "setUserData"]),
   },
   computed: {
     ...mapGetters({
       userData: "getUserData",
     }),
-    userName() {
-      const firstname = this.userData.firstname;
-      if (firstname) {
-        return `Bienvenido ${
-          firstname.charAt(0).toUpperCase() + firstname.slice(1)
-        }!`;
-      }
-      return "";
-    },
   },
   created: function () {
-    this.setItems();
     this.setOffers();
     this.setUserData();
   },

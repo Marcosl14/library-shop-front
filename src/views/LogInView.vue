@@ -7,19 +7,57 @@
           <form class="form" action="" @submit.prevent="onSubmit">
             <label for="email-input">Email</label>
             <input type="text" name="email-input" v-model="email" />
+            <transition>
+              <label
+                class="error-label"
+                v-if="error.includes('USER_NOT_FOUND')"
+              >
+                El usuario ingresado no se encuentra registrado.
+              </label>
+            </transition>
+            <transition>
+              <label class="error-label" v-if="error.includes('Unauthorized')">
+                El usuario ingresado no se encuentra registrado.
+              </label>
+            </transition>
+            <transition>
+              <label
+                class="error-label"
+                v-if="error.includes('EMAIL_NOT_VALID')"
+              >
+                El email ingresado no es válido.
+              </label>
+            </transition>
+
             <label for="password-input">Contraseña</label>
             <input type="password" name="password-input" v-model="password" />
+            <transition>
+              <label
+                class="error-label"
+                v-if="error.includes('WRONG_PASSWORD')"
+              >
+                La contraseña ingresada no es válida.
+              </label>
+            </transition>
+            <transition>
+              <label class="error-label" v-if="error.includes('Unauthorized')">
+                La contraseña ingresada no es válida.
+              </label>
+            </transition>
+
             <br />
             <input type="submit" value="Iniciar Sesión" @click="senddata()" />
-
-            <label v-if="error == 'WRONG_PASSWORD'"
-              >La contraseña ingresada es incorrecta
-            </label>
           </form>
         </div>
         <div>
           <h3>O si todavìa no estás registrado:</h3>
-          <RouterLink to="/registro-nuevo-usuario">Registrarse</RouterLink>
+          <RouterLink to="/registro-nuevo-usuario" class="button-link">
+            Registrarse
+          </RouterLink>
+          <h3>Olvidaste tu contraseña?</h3>
+          <RouterLink to="/password-olvidada" class="button-link">
+            Solicitar mail con nueva contraseña
+          </RouterLink>
         </div>
       </div>
     </div>
@@ -41,9 +79,6 @@ export default {
   methods: {
     ...mapActions(["login"]),
     senddata() {
-      // faltan validaciones y habilitar el boton solo cuando todo OK.
-      // faltan definir los errores, por ejemplo si el ususario no existe, o cosas así...
-
       userService
         .login(this.email, this.password)
         .then((res) => {
@@ -52,8 +87,17 @@ export default {
           this.$router.push({ name: "offers" });
         })
         .catch((err) => {
-          console.log(err.response.data.statusCode, err.response.data.message);
-          this.error = err.response.data.message;
+          const statusCode = err.response.data.statusCode;
+          const errorMessage = err.response.data.message;
+          if (
+            statusCode != 400 ||
+            statusCode != 401 ||
+            statusCode != 403 ||
+            statusCode != 404
+          ) {
+            console.log(statusCode, errorMessage);
+          }
+          this.error = errorMessage;
         });
     },
   },
@@ -83,5 +127,40 @@ export default {
 
 .form input {
   width: 50%;
+}
+
+.button-link {
+  color: var(--color-red);
+  text-decoration: underline;
+}
+
+.error-label {
+  color: var(--color-red);
+}
+
+.v-enter-from {
+  transform: translateX(-200px);
+  opacity: 0;
+}
+
+.v-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.v-enter-to {
+  opacity: 1;
+}
+
+.v-leave-from {
+  opacity: 1;
+}
+
+.v-leave-active {
+  transition: all 0.5s ease-in;
+}
+
+.v-leave-to {
+  transform: translateX(200px);
+  opacity: 0;
 }
 </style>
