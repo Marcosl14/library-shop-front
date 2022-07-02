@@ -2,22 +2,31 @@
   <main>
     <div class="main-container">
       <div v-if="confirmed">
-        <h1>Has sido registrad@ correctamente!!!</h1>
+        <h1>Tu cuenta de Email ha sido validada correctamente!!!</h1>
         <button @click="backToLogin">Iniciar sesión</button>
       </div>
 
-      <h1 v-if="error == 'USER_ALREADY_REGISTERED'">
-        Este usuari@ ya ha sido registrad@!!!
+      <h1 v-if="error == 'EMAIL_CHANGE_ALREADY_CONFIRMED'">
+        Este cambio de email ya ha sido confirmado!!!
       </h1>
 
-      <h1 v-if="error == 'WRONG_REGISTRY_UUID'">
-        El código de registro ha caducado...
+      <h1 v-if="error == 'EMAIL_CHANGE_NOT_VALID'">
+        El cambio de email no es válido
+      </h1>
+
+      <h1 v-if="error == 'EMPTY_REGISTRATION_IDENTIFIER'">
+        No se encuentra el código de validación
+      </h1>
+
+      <h1 v-if="error == 'VALUE_IS_NOT_UUID'">
+        El código de validación ingresado no es válido
       </h1>
     </div>
   </main>
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import userService from "../services/userService";
 
 export default {
@@ -28,11 +37,12 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["logout"]),
     check() {
       userService
-        .confirmRegistration(this.$route.params.id)
+        .confirmEmailChange(this.$route.params.id)
         .then(() => {
-          console.log("pepe");
+          this.logout();
           this.confirmed = true;
         })
         .catch((err) => {
