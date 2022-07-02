@@ -9,4 +9,8 @@ export default {
   getAll() {
     return APIclient.get(`/offers`);
   },
+
+  getOne(id) {
+    return APIclient.get(`/offers/${id}`);
+  },
 };

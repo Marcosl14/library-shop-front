@@ -32,7 +32,6 @@ export default {
       userService
         .confirmRegistration(this.$route.params.id)
         .then(() => {
-          console.log("pepe");
           this.confirmed = true;
         })
         .catch((err) => {

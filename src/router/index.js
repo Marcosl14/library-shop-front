@@ -9,6 +9,8 @@ import RegisterView from "../views/RegisterView.vue";
 import ConfirmRegistration from "../views/ConfirmRegistration.vue";
 import ConfirmEmailChange from "../views/ConfirmEmailChange.vue";
 import PasswordForgottenView from "../views/PasswordForgottenView.vue";
+import BuyProductView from "../views/BuyProductView.vue";
+import BuyOfferView from "../views/BuyOfferView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,9 +21,19 @@ const router = createRouter({
       component: HomeView,
     },
     {
+      path: "/oferta/:id",
+      name: "offer",
+      component: BuyOfferView,
+    },
+    {
       path: "/productos",
       name: "products",
       component: ProductsView,
+    },
+    {
+      path: "/producto/:id",
+      name: "product",
+      component: BuyProductView,
     },
     {
       path: "/contacto",
