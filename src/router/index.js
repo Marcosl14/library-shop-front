@@ -21,7 +21,7 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: "/oferta/:id",
+      path: "/oferta/:id/:quantity",
       name: "offer",
       component: BuyOfferView,
     },
@@ -31,7 +31,7 @@ const router = createRouter({
       component: ProductsView,
     },
     {
-      path: "/producto/:id",
+      path: "/producto/:id/:quantity",
       name: "product",
       component: BuyItemView,
     },

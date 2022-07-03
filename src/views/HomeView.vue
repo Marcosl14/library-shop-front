@@ -3,21 +3,24 @@
     <div class="main-container">
       <h1>Combos en oferta!!!</h1>
       <div class="offer-items-container">
-        <ProductOffer v-for="offer in offers" :key="offer.id" :offer="offer" />
-        <!-- comment: falta el tachar el precio del producto y poner el precio nuevo con descuento-->
+        <ProductComponent
+          v-for="offer in offers"
+          :key="offer.id"
+          :product="offer"
+          :type="'offer'"
+        />
       </div>
     </div>
   </main>
 </template>
 
 <script>
-// import { mapActions, mapMutations, mapState, mapGetters } from "vuex";
-import ProductOffer from "../components/ProductOffer.vue";
+import ProductComponent from "../components/ProductComponent.vue";
 import { mapGetters } from "vuex";
 
 export default {
   components: {
-    ProductOffer,
+    ProductComponent,
   },
   computed: {
     ...mapGetters({

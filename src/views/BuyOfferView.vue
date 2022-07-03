@@ -1,28 +1,14 @@
 <template>
   <main>
     <div class="main-container">
-      <h1>Pepe !!!</h1>
+      <h1>Comprar ésta oferta !!!</h1>
       <div class="product-offers-container">
-        <div class="wrapper">
-          <div class="img-container">
-            <img class="offer-img" :src="offer.photo" />
-          </div>
-          <div class="offer-info">
-            <div class="offer-text">
-              <h1>{{ offerTitle }}</h1>
-              <h2>{{ offerDescription }}</h2>
-            </div>
-            <div class="offer-price-btn">
-              <h2>${{ offer.priceWithDiscount }}</h2>
-              <div v-if="offer.discount > 0" class="offer-discount-container">
-                <h3 class="normal-price">${{ offer.price }}</h3>
-                <h3 class="discount">%{{ offer.discount }}</h3>
-              </div>
-              <button type="button" @click="addToCart()">Comprar</button>
-            </div>
-            <h1>falta incrementar cantidad de unidades a comprar</h1>
-          </div>
-        </div>
+        <ProductComponent
+          :product="offer"
+          :quantityEnabled="true"
+          :currentQuantity="quantity"
+          :type="'offer'"
+        />
       </div>
     </div>
   </main>
@@ -30,35 +16,17 @@
 
 <script>
 import offerService from "../services/offersService";
-import cartService from "../services/cartService";
-
-const TYPE = "offer";
+import ProductComponent from "../components/ProductComponent.vue";
 
 export default {
+  components: {
+    ProductComponent,
+  },
   data() {
     return {
-      error: "",
       offer: {},
       quantity: 1,
     };
-  },
-  computed: {
-    offerTitle() {
-      const offerTitle = this.offer.title;
-      if (offerTitle) {
-        return `${offerTitle.charAt(0).toUpperCase() + offerTitle.slice(1)}!`;
-      }
-      return "";
-    },
-    offerDescription() {
-      const offerDescription = this.offer.description;
-      if (offerDescription) {
-        return `${
-          offerDescription.charAt(0).toUpperCase() + offerDescription.slice(1)
-        }!`;
-      }
-      return "";
-    },
   },
   methods: {
     findProduct() {
@@ -72,20 +40,10 @@ export default {
           this.error = err.response.data.message;
         });
     },
-    addToCart() {
-      cartService
-        .add(TYPE, parseInt(this.offer.id), parseInt(this.quantity))
-        .then(() => {
-          this.$router.push({ name: "cart" });
-        })
-        .catch((err) => {
-          console.log(err.response.data.statusCode, err.response.data.message);
-          this.error = err.response.data.message;
-        });
-    },
   },
   created: function () {
     this.findProduct();
+    this.quantity = this.$route.params.quantity;
   },
 };
 </script>
@@ -127,7 +85,9 @@ export default {
 }
 
 .offer-info {
+  width: 40%;
   margin-left: 0.5em;
+  margin-right: 1em;
 }
 
 .offer-discount-container {

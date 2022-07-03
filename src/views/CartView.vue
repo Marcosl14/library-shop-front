@@ -3,17 +3,23 @@
     <div class="main-container">
       <h1>Carrito!!!</h1>
       <div class="product-items-container">
-        <CartProductItem
+        <ProductComponent
           v-for="item in cart.cartItems"
-          :key="item.id"
-          :item="item"
+          :key="item.item.id"
+          :product="item.item"
+          :quantityEnabled="true"
+          :buyEnabled="false"
+          :currentQuantity="item.quantity"
+          :type="'item'"
         />
-      </div>
-      <div class="product-items-container">
-        <CartProductOffer
+        <ProductComponent
           v-for="offer in cart.cartOffers"
-          :key="offer.id"
-          :offer="offer"
+          :key="offer.offer.id"
+          :product="offer.offer"
+          :quantityEnabled="true"
+          :buyEnabled="false"
+          :currentQuantity="offer.quantity"
+          :type="'offer'"
         />
       </div>
     </div>
@@ -22,11 +28,10 @@
 
 <script>
 import cartService from "../services/cartService";
-import CartProductItem from "../components/CartProductItemComponent.vue";
-import CartProductOffer from "../components/CartProductOfferComponent.vue";
+import ProductComponent from "../components/ProductComponent.vue";
 
 export default {
-  components: { CartProductItem, CartProductOffer },
+  components: { ProductComponent },
   data() {
     return {
       error: "",
