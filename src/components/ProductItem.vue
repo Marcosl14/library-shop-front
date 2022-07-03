@@ -9,10 +9,13 @@
         <h2>{{ itemDescription }}</h2>
       </div>
       <div class="product-price-btn">
-        <h3>{{ item.priceWithDiscount }}$</h3>
+        <h2>${{ item.priceWithDiscount }}</h2>
+        <div v-if="item.discount > 0" class="item-discount-container">
+          <h3 class="normal-price">${{ item.price }}</h3>
+          <h3 class="discount">%{{ item.discount }}</h3>
+        </div>
         <button type="button" @click="buy(item.id)">Comprar</button>
       </div>
-      <h1>falta tachar el precio</h1>
     </div>
   </div>
 </template>
@@ -79,6 +82,26 @@ export default {
 
 .product-info {
   margin-left: 0.5em;
+}
+
+.item-discount-container {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.item-discount-container h3:first-of-type {
+  margin-right: 10px;
+}
+
+.normal-price {
+  color: var(--color-brown);
+  text-decoration: line-through;
+}
+
+.discount {
+  color: var(--color-black);
+  background-color: var(--color-green);
 }
 
 /* 

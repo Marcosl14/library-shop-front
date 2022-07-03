@@ -13,11 +13,14 @@
               <h2>{{ offerDescription }}</h2>
             </div>
             <div class="offer-price-btn">
-              <h3>{{ offer.priceWithDiscount }}$</h3>
+              <h2>${{ offer.priceWithDiscount }}</h2>
+              <div v-if="offer.discount > 0" class="offer-discount-container">
+                <h3 class="normal-price">${{ offer.price }}</h3>
+                <h3 class="discount">%{{ offer.discount }}</h3>
+              </div>
               <button type="button" @click="addToCart()">Comprar</button>
             </div>
             <h1>falta incrementar cantidad de unidades a comprar</h1>
-            <h1>falta tachar el precio</h1>
           </div>
         </div>
       </div>
@@ -125,5 +128,25 @@ export default {
 
 .offer-info {
   margin-left: 0.5em;
+}
+
+.offer-discount-container {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.offer-discount-container h3:first-of-type {
+  margin-right: 10px;
+}
+
+.normal-price {
+  color: var(--color-brown);
+  text-decoration: line-through;
+}
+
+.discount {
+  color: var(--color-black);
+  background-color: var(--color-green);
 }
 </style>

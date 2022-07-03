@@ -9,7 +9,7 @@ import RegisterView from "../views/RegisterView.vue";
 import ConfirmRegistration from "../views/ConfirmRegistration.vue";
 import ConfirmEmailChange from "../views/ConfirmEmailChange.vue";
 import PasswordForgottenView from "../views/PasswordForgottenView.vue";
-import BuyProductView from "../views/BuyProductView.vue";
+import BuyItemView from "../views/BuyItemView.vue";
 import BuyOfferView from "../views/BuyOfferView.vue";
 
 const router = createRouter({
@@ -33,7 +33,7 @@ const router = createRouter({
     {
       path: "/producto/:id",
       name: "product",
-      component: BuyProductView,
+      component: BuyItemView,
     },
     {
       path: "/contacto",
