@@ -3,7 +3,7 @@
     <div class="main-container">
       <h1>Combos en oferta!!!</h1>
       <div class="offer-items-container">
-        <OfferItem v-for="offer in offers" :key="offer.id" :offer="offer" />
+        <ProductOffer v-for="offer in offers" :key="offer.id" :offer="offer" />
         <!-- comment: falta el tachar el precio del producto y poner el precio nuevo con descuento-->
       </div>
     </div>
@@ -12,12 +12,12 @@
 
 <script>
 // import { mapActions, mapMutations, mapState, mapGetters } from "vuex";
-import OfferItem from "../components/OfferItem.vue";
+import ProductOffer from "../components/ProductOffer.vue";
 import { mapGetters } from "vuex";
 
 export default {
   components: {
-    OfferItem,
+    ProductOffer,
   },
   computed: {
     ...mapGetters({
