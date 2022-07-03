@@ -2,16 +2,31 @@
   <main>
     <div class="main-container">
       <h1>Carrito!!!</h1>
-      {{ cart }}
-      <!-- poner nombre usuario -->
+      <div class="product-items-container">
+        <CartProductItem
+          v-for="item in cart.cartItems"
+          :key="item.id"
+          :item="item"
+        />
+      </div>
+      <div class="product-items-container">
+        <CartProductOffer
+          v-for="offer in cart.cartOffers"
+          :key="offer.id"
+          :offer="offer"
+        />
+      </div>
     </div>
   </main>
 </template>
 
 <script>
 import cartService from "../services/cartService";
+import CartProductItem from "../components/CartProductItemComponent.vue";
+import CartProductOffer from "../components/CartProductOfferComponent.vue";
 
 export default {
+  components: { CartProductItem, CartProductOffer },
   data() {
     return {
       error: "",
