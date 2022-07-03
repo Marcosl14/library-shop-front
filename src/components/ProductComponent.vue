@@ -1,46 +1,112 @@
 <template>
   <div class="wrapper">
     <div class="img-container">
-      <img class="product-img" :src="item.photo" />
+      <img class="product-img" :src="product.photo" />
     </div>
     <div class="product-info">
       <div class="product-text">
-        <h1>{{ itemTitle }}</h1>
-        <h2>{{ itemDescription }}</h2>
+        <h1>{{ productTitle }}</h1>
+        <h2>{{ productDescription }}</h2>
       </div>
-      <div class="product-price-btn">
-        <h2>${{ item.priceWithDiscount }}</h2>
-        <div v-if="item.discount > 0" class="item-discount-container">
-          <h3 class="normal-price">${{ item.price }}</h3>
-          <h3 class="discount">%{{ item.discount }}</h3>
-        </div>
-        <button type="button" @click="buy(item.id)">Comprar</button>
+      <h2>${{ product.priceWithDiscount }}</h2>
+      <div v-if="product.discount > 0" class="product-discount-container">
+        <h3 class="normal-price">${{ product.price }}</h3>
+        <h3 class="discount">%{{ product.discount }}</h3>
       </div>
+
+      <div v-if="quantityEnabled" class="quantity-container">
+        <h3>Cantidad:</h3>
+        <input
+          type="number"
+          name="quantity"
+          v-model="quantity"
+          min="1"
+          @keypress="blockChars($event)"
+        />
+        <button type="button" @click="addQuantity()">+</button>
+        <button
+          type="button"
+          @click="substractQuantity()"
+          :disabled="quantity <= 1"
+        >
+          -
+        </button>
+      </div>
+
+      <div v-if="buyEnabled && quantityEnabled" class="product-price-btn">
+        <button type="button" @click="addToCart()">Comprar</button>
+      </div>
+
+      <div v-if="buyEnabled && !quantityEnabled" class="product-price-btn">
+        <button type="button" @click="buy(product.id)">Comprar</button>
+      </div>
+
+      <div v-if="!buyEnabled && quantityEnabled" class="product-price-btn">
+        <button type="button" @click="buy(product.id)">Ver Producto</button>
+      </div>
+    </div>
+    <div v-if="type == 'offer'" class="product-elements">
+      <h2>Ésta oferta consiste en:</h2>
+      <ul>
+        <li v-for="offerItem in product.offerItems" :key="offerItem.id">
+          {{ offerItem.quantity }} unidades de {{ offerItem.item.title }}
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
+import cartService from "../services/cartService";
+
 export default {
-  name: "ProductItem",
+  name: "ProductComponent",
+  data() {
+    return {
+      error: "",
+      quantity: this.currentQuantity,
+    };
+  },
   props: {
-    item: {
+    product: {
+      required: true,
+    },
+    quantityEnabled: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    buyEnabled: {
+      type: Boolean,
+      default: true,
+      required: false,
+    },
+    currentQuantity: {
+      type: Number,
+      default: 1,
+      required: false,
+    },
+    type: {
+      type: String,
       required: true,
     },
   },
   computed: {
-    itemTitle() {
-      const itemTitle = this.item.title;
-      if (itemTitle) {
-        return `${itemTitle.charAt(0).toUpperCase() + itemTitle.slice(1)}!`;
+    productTitle() {
+      const productTitle = this.product.title;
+      if (productTitle) {
+        return `${
+          productTitle.charAt(0).toUpperCase() + productTitle.slice(1)
+        }!`;
       }
       return "";
     },
-    itemDescription() {
-      const itemDescription = this.item.description;
-      if (itemDescription) {
+    productDescription() {
+      const productDescription = this.product.description;
+      if (productDescription) {
         return `${
-          itemDescription.charAt(0).toUpperCase() + itemDescription.slice(1)
+          productDescription.charAt(0).toUpperCase() +
+          productDescription.slice(1)
         }!`;
       }
       return "";
@@ -48,7 +114,47 @@ export default {
   },
   methods: {
     buy(id) {
-      this.$router.push(`/producto/${id}`);
+      if (this.type == "offer") {
+        this.$router.push(`/oferta/${id}/${this.quantity}`);
+      }
+      if (this.type == "item") {
+        this.$router.push(`/producto/${id}/${this.quantity}`);
+      }
+    },
+    addToCart() {
+      if (this.quantity > 0) {
+        cartService
+          .add(this.type, parseInt(this.product.id), parseInt(this.quantity))
+          .then(() => {
+            this.$router.push({ name: "cart" });
+          })
+          .catch((err) => {
+            console.log(
+              err.response.data.statusCode,
+              err.response.data.message
+            );
+            this.error = err.response.data.message;
+          });
+      } else {
+        this.quantity = 1;
+      }
+    },
+    blockChars(event) {
+      event = event ? event : window.event;
+      var charCode = event.which ? event.which : event.keyCode;
+      if (
+        charCode > 31 &&
+        (charCode < 48 || charCode > 57) &&
+        charCode !== 46
+      ) {
+        event.preventDefault();
+      }
+    },
+    addQuantity() {
+      this.quantity++;
+    },
+    substractQuantity() {
+      this.quantity--;
     },
   },
 };
@@ -76,21 +182,22 @@ export default {
 
 .product-img {
   height: 100%;
-
   border-radius: var(--border-radius) 0 0 var(--border-radius);
 }
 
 .product-info {
+  width: 40%;
   margin-left: 0.5em;
+  margin-right: 1em;
 }
 
-.item-discount-container {
+.product-discount-container {
   display: flex;
   flex-direction: row;
   align-items: baseline;
 }
 
-.item-discount-container h3:first-of-type {
+.product-discount-container h3:first-of-type {
   margin-right: 10px;
 }
 
@@ -102,6 +209,18 @@ export default {
 .discount {
   color: var(--color-black);
   background-color: var(--color-green);
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 /* 

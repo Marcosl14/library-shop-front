@@ -41,12 +41,12 @@
           </div>
         </div>
         <div class="product-items-container">
-          <ProductItem
+          <ProductComponent
             v-for="item in items.items"
             :key="item.id"
-            :item="item"
+            :product="item"
+            :type="'item'"
           />
-          <!-- comment: falta el tachar el precio del producto y poner el precio nuevo con descuento-->
         </div>
       </div>
     </div>
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import ProductItem from "../components/ProductItem.vue";
+import ProductComponent from "../components/ProductComponent.vue";
 import { mapGetters, mapMutations } from "vuex";
 
 const DEFAULT_ORDER_BY = "title";
@@ -63,7 +63,7 @@ const DEFAULT_PAGE = 1;
 
 export default {
   components: {
-    ProductItem,
+    ProductComponent,
   },
   data() {
     return {
