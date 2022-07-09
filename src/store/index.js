@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
 import { createStore } from "vuex";
+
+import router from "../router/index.js";
+
 import categoriesService from "../services/categoriesService";
 import itemsService from "../services/itemsService";
 import offersService from "../services/offersService";
 import userService from "../services/userService";
 import cartService from "../services/cartService";
-
-import router from "../router/index.js";
 
 export default createStore({
   state: {
@@ -126,19 +127,30 @@ export default createStore({
             const itemIndex = state.cart.cartItems.findIndex((cartItem) => {
               return cartItem.item.id == productId;
             });
-            state.cart.cartItems[itemIndex].quantity = quantity;
+            if (itemIndex >= 0) {
+              state.cart.cartItems[itemIndex].quantity = quantity;
+            }
           }
           if (type == "offer" && state.cart.cartOffers) {
             const offerIndex = state.cart.cartOffers.findIndex((cartOffer) => {
               return cartOffer.offer.id == productId;
             });
-            state.cart.cartOffers[offerIndex].quantity = quantity;
+            if (offerIndex >= 0) {
+              state.cart.cartItems[offerIndex].quantity = quantity;
+            }
           }
           router.push({ name: "cart" });
         })
         .catch((err) => {
-          console.log(err.response.data.statusCode, err.response.data.message);
-          this.error = err.response.data.message;
+          if (err.response.data) {
+            console.log(
+              err.response.data.statusCode,
+              err.response.data.message
+            );
+            this.error = err.response.data.message;
+          } else {
+            console.log(err);
+          }
         });
     },
     removeItemFromCart(state, data) {
@@ -185,6 +197,9 @@ export default createStore({
         data.lastname.charAt(0).toUpperCase() + data.lastname.slice(1);
 
       this.state.userData.phone = data.phone;
+    },
+    clearCart(context) {
+      this.state.cart = {};
     },
   },
   modules: {},
