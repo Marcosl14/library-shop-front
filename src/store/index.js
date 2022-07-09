@@ -4,12 +4,14 @@ import categoriesService from "../services/categoriesService";
 import itemsService from "../services/itemsService";
 import offersService from "../services/offersService";
 import userService from "../services/userService";
+import cartService from "../services/cartService";
 
 export default createStore({
   state: {
     items: [],
     categories: [],
     offers: [],
+    cart: {},
     userData: {},
   },
   getters: {
@@ -24,6 +26,9 @@ export default createStore({
     },
     getCategories: (state) => {
       return state.categories;
+    },
+    getCart: (state) => {
+      return state.cart;
     },
   },
   mutations: {
@@ -86,6 +91,41 @@ export default createStore({
         })
         .catch((err) => {
           console.log(err.response.data.statusCode, err.response.data.message);
+        });
+    },
+    setCart(state) {
+      cartService
+        .getCurrentCart()
+        .then((res) => {
+          this.state.cart = res.data;
+        })
+        .catch((err) => {
+          console.log(err.response.data.statusCode, err.response.data.message);
+          this.error = err.response.data.message;
+        });
+    },
+    removeItemFromCart(state, data) {
+      const type = data.type;
+      const type_id = data.type_id;
+      cartService
+        .remove(type, type_id)
+        .then(() => {
+          if (type == "item" && state.cart.cartItems) {
+            const itemIndex = state.cart.cartItems.findIndex((item) => {
+              return item.id == type_id;
+            });
+            this.state.cart.cartItems.splice(itemIndex, 1);
+          }
+          if (type == "offer" && state.cart.cartOffers) {
+            const offerIndex = state.cart.cartOffers.findIndex((offer) => {
+              return offer.id == type_id;
+            });
+            this.state.cart.cartOffers.splice(offerIndex, 1);
+          }
+        })
+        .catch((err) => {
+          console.log(err.response.data.statusCode, err.response.data.message);
+          this.error = err.response.data.message;
         });
     },
   },
