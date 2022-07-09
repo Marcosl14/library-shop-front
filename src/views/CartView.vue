@@ -11,7 +11,7 @@
           :quantityEnabled="true"
           :deleteEnabled="true"
           :buyEnabled="false"
-          :currentQuantity="parseInt(cartItem.quantity)"
+          :currentQuantity="parseInt(cartItem.quantity) || 1"
           :type="'item'"
         />
         <ProductComponent
@@ -22,7 +22,7 @@
           :quantityEnabled="true"
           :deleteEnabled="true"
           :buyEnabled="false"
-          :currentQuantity="parseInt(cartOffer.quantity)"
+          :currentQuantity="parseInt(cartOffer.quantity) || 1"
           :type="'offer'"
         />
       </div>
