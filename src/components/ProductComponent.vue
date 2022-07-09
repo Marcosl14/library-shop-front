@@ -62,7 +62,7 @@
 
 <script>
 import cartService from "../services/cartService";
-import { mapMutations } from "vuex";
+import { mapMutations, mapGetters } from "vuex";
 
 export default {
   name: "ProductComponent",
@@ -106,6 +106,9 @@ export default {
     },
   },
   computed: {
+    ...mapGetters({
+      userExists: "userExists",
+    }),
     productTitle() {
       const productTitle = this.product.title;
       if (productTitle) {
@@ -137,21 +140,25 @@ export default {
       }
     },
     addToCart() {
-      if (this.quantity > 0) {
-        cartService
-          .add(this.type, parseInt(this.product.id), parseInt(this.quantity))
-          .then(() => {
-            this.$router.push({ name: "cart" });
-          })
-          .catch((err) => {
-            console.log(
-              err.response.data.statusCode,
-              err.response.data.message
-            );
-            this.error = err.response.data.message;
-          });
+      if (this.userExists) {
+        if (this.quantity > 0) {
+          cartService
+            .add(this.type, parseInt(this.product.id), parseInt(this.quantity))
+            .then(() => {
+              this.$router.push({ name: "cart" });
+            })
+            .catch((err) => {
+              console.log(
+                err.response.data.statusCode,
+                err.response.data.message
+              );
+              this.error = err.response.data.message;
+            });
+        } else {
+          this.quantity = 1;
+        }
       } else {
-        this.quantity = 1;
+        this.$router.push({ name: "log-in" });
       }
     },
     removeFromCart() {

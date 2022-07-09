@@ -2,7 +2,7 @@
   <main>
     <div class="main-container">
       <h1>Carrito!!!</h1>
-      <div class="product-items-container">
+      <div v-if="cartContainsProducts" class="product-items-container">
         <ProductComponent
           v-for="cartItem in cart.cartItems"
           :key="cartItem.item.id"
@@ -11,7 +11,7 @@
           :quantityEnabled="true"
           :deleteEnabled="true"
           :buyEnabled="false"
-          :currentQuantity="cartItem.quantity"
+          :currentQuantity="parseInt(cartItem.quantity)"
           :type="'item'"
         />
         <ProductComponent
@@ -22,9 +22,12 @@
           :quantityEnabled="true"
           :deleteEnabled="true"
           :buyEnabled="false"
-          :currentQuantity="cartOffer.quantity"
+          :currentQuantity="parseInt(cartOffer.quantity)"
           :type="'offer'"
         />
+      </div>
+      <div v-else class="product-items-container">
+        <h3>El carrito se encuentra vacío</h3>
       </div>
     </div>
   </main>
@@ -45,7 +48,16 @@ export default {
   computed: {
     ...mapGetters({
       cart: "getCart",
+      userExists: "userExists",
     }),
+    cartContainsProducts() {
+      if (this.cart && this.cart.cartItems && this.cart.cartOffers) {
+        return (
+          this.cart.cartItems.length > 0 || this.cart.cartOffers.length > 0
+        );
+      }
+      return false;
+    },
   },
   methods: {
     ...mapMutations(["setCart"]),
