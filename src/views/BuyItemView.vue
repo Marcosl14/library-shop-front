@@ -43,7 +43,7 @@ export default {
   },
   created: function () {
     this.findProduct();
-    this.quantity = this.$route.params.quantity;
+    this.quantity = parseInt(this.$route.params.quantity) || 1;
   },
 };
 </script>

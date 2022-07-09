@@ -11,11 +11,11 @@
             <button :disabled="disabledReduceButton" @click="reducePage">
               -
             </button>
-            <p>{{ items.meta.currentPage }}</p>
+            <p>{{ items.meta ? items.meta.currentPage : 1 }}</p>
             <button :disabled="disabledIncreaseButton" @click="increasePage">
               +
             </button>
-            <p>de {{ items.meta.totalPages }} páginas</p>
+            <p>de {{ items.meta ? items.meta.totalPages : 1 }} páginas</p>
           </div>
           <br />
           <h3>Ordenar por:</h3>
@@ -85,6 +85,9 @@ export default {
       return true;
     },
     disabledIncreaseButton() {
+      if (!this.items.meta) {
+        return true;
+      }
       if (this.page < this.items.meta.totalPages) {
         return false;
       }

@@ -6,6 +6,8 @@ import offersService from "../services/offersService";
 import userService from "../services/userService";
 import cartService from "../services/cartService";
 
+import router from "../router/index.js";
+
 export default createStore({
   state: {
     items: [],
@@ -17,6 +19,17 @@ export default createStore({
   getters: {
     getUserData: (state) => {
       return state.userData;
+    },
+    userExists: (state) => {
+      if (
+        state.userData.firstname &&
+        state.userData.lastname &&
+        state.userData.email &&
+        state.userData.phone
+      ) {
+        return true;
+      }
+      return false;
     },
     getOffers: (state) => {
       return state.offers;
@@ -100,6 +113,7 @@ export default createStore({
           this.state.cart = res.data;
         })
         .catch((err) => {
+          router.push({ name: "log-in" });
           console.log(err.response.data.statusCode, err.response.data.message);
           this.error = err.response.data.message;
         });
