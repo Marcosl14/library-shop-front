@@ -33,10 +33,6 @@
         </button>
       </div>
 
-      <div v-if="deleteEnabled" class="product-price-btn">
-        <button type="button" @click="removeFromCart()">Eliminar</button>
-      </div>
-
       <div v-if="buyEnabled && quantityEnabled" class="product-price-btn">
         <button type="button" @click="addToCart()">Comprar</button>
       </div>
@@ -46,6 +42,8 @@
       </div>
 
       <div v-if="!buyEnabled && quantityEnabled" class="product-price-btn">
+        <button type="button" @click="addToCart()">Actualizar Cantidad</button>
+        <button type="button" @click="removeFromCart()">Eliminar</button>
         <button type="button" @click="buy()">Ver Producto</button>
       </div>
     </div>
@@ -61,7 +59,6 @@
 </template>
 
 <script>
-import cartService from "../services/cartService";
 import { mapMutations, mapGetters } from "vuex";
 
 export default {
@@ -81,11 +78,6 @@ export default {
       required: false,
     },
     quantityEnabled: {
-      type: Boolean,
-      default: false,
-      required: false,
-    },
-    deleteEnabled: {
       type: Boolean,
       default: false,
       required: false,
@@ -130,7 +122,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["removeItemFromCart"]),
+    ...mapMutations(["removeItemFromCart", "setCart", "addOrUpdateCartItem"]),
     buy() {
       if (this.type == "offer") {
         this.$router.push(`/oferta/${this.product.id}/${this.quantity}`);
@@ -142,18 +134,11 @@ export default {
     addToCart() {
       if (this.userExists) {
         if (this.quantity > 0) {
-          cartService
-            .add(this.type, parseInt(this.product.id), parseInt(this.quantity))
-            .then(() => {
-              this.$router.push({ name: "cart" });
-            })
-            .catch((err) => {
-              console.log(
-                err.response.data.statusCode,
-                err.response.data.message
-              );
-              this.error = err.response.data.message;
-            });
+          this.addOrUpdateCartItem({
+            type: this.type,
+            productId: parseInt(this.product.id),
+            quantity: parseInt(this.quantity),
+          });
         } else {
           this.quantity = 1;
         }

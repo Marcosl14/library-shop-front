@@ -24,7 +24,7 @@ export default {
     return APIclient.get(`/cart`, config);
   },
 
-  add(type, product_id, quantity) {
+  addOrUpdate(type, product_id, quantity) {
     const config = {
       headers: { Authorization: `Bearer ${getUserToken()}` },
     };

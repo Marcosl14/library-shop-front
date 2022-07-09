@@ -118,6 +118,29 @@ export default createStore({
           this.error = err.response.data.message;
         });
     },
+    addOrUpdateCartItem(state, { type, productId, quantity }) {
+      cartService
+        .addOrUpdate(type, productId, quantity)
+        .then(() => {
+          if (type == "item" && state.cart.cartItems) {
+            const itemIndex = state.cart.cartItems.findIndex((cartItem) => {
+              return cartItem.item.id == productId;
+            });
+            state.cart.cartItems[itemIndex].quantity = quantity;
+          }
+          if (type == "offer" && state.cart.cartOffers) {
+            const offerIndex = state.cart.cartOffers.findIndex((cartOffer) => {
+              return cartOffer.offer.id == productId;
+            });
+            state.cart.cartOffers[offerIndex].quantity = quantity;
+          }
+          router.push({ name: "cart" });
+        })
+        .catch((err) => {
+          console.log(err.response.data.statusCode, err.response.data.message);
+          this.error = err.response.data.message;
+        });
+    },
     removeItemFromCart(state, data) {
       const type = data.type;
       const type_id = data.type_id;
@@ -128,13 +151,13 @@ export default createStore({
             const itemIndex = state.cart.cartItems.findIndex((item) => {
               return item.id == type_id;
             });
-            this.state.cart.cartItems.splice(itemIndex, 1);
+            state.cart.cartItems.splice(itemIndex, 1);
           }
           if (type == "offer" && state.cart.cartOffers) {
             const offerIndex = state.cart.cartOffers.findIndex((offer) => {
               return offer.id == type_id;
             });
-            this.state.cart.cartOffers.splice(offerIndex, 1);
+            state.cart.cartOffers.splice(offerIndex, 1);
           }
         })
         .catch((err) => {
