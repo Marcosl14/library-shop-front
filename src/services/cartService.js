@@ -31,4 +31,16 @@ export default {
 
     return APIclient.post(`/cart`, { type, product_id, quantity }, config);
   },
+
+  remove(type, product_id) {
+    const config = {
+      headers: { Authorization: `Bearer ${getUserToken()}` },
+      data: {
+        type: type,
+        type_id: product_id,
+      },
+    };
+
+    return APIclient.delete(`/cart`, config);
+  },
 };

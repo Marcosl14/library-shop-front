@@ -34,13 +34,13 @@ import { RouterLink, RouterView } from "vue-router";
 import { mapMutations, mapGetters } from "vuex";
 
 export default {
-  methods: {
-    ...mapMutations(["setOffers", "setUserData"]),
-  },
   computed: {
     ...mapGetters({
       userData: "getUserData",
     }),
+  },
+  methods: {
+    ...mapMutations(["setOffers", "setUserData"]),
   },
   created: function () {
     this.setOffers();

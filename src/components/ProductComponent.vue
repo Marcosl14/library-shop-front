@@ -33,16 +33,20 @@
         </button>
       </div>
 
+      <div v-if="deleteEnabled" class="product-price-btn">
+        <button type="button" @click="removeFromCart()">Eliminar</button>
+      </div>
+
       <div v-if="buyEnabled && quantityEnabled" class="product-price-btn">
         <button type="button" @click="addToCart()">Comprar</button>
       </div>
 
       <div v-if="buyEnabled && !quantityEnabled" class="product-price-btn">
-        <button type="button" @click="buy(product.id)">Comprar</button>
+        <button type="button" @click="buy()">Comprar</button>
       </div>
 
       <div v-if="!buyEnabled && quantityEnabled" class="product-price-btn">
-        <button type="button" @click="buy(product.id)">Ver Producto</button>
+        <button type="button" @click="buy()">Ver Producto</button>
       </div>
     </div>
     <div v-if="type == 'offer'" class="product-elements">
@@ -58,6 +62,7 @@
 
 <script>
 import cartService from "../services/cartService";
+import { mapMutations } from "vuex";
 
 export default {
   name: "ProductComponent",
@@ -71,7 +76,16 @@ export default {
     product: {
       required: true,
     },
+    cartProductId: {
+      type: String,
+      required: false,
+    },
     quantityEnabled: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    deleteEnabled: {
       type: Boolean,
       default: false,
       required: false,
@@ -113,12 +127,13 @@ export default {
     },
   },
   methods: {
-    buy(id) {
+    ...mapMutations(["removeItemFromCart"]),
+    buy() {
       if (this.type == "offer") {
-        this.$router.push(`/oferta/${id}/${this.quantity}`);
+        this.$router.push(`/oferta/${this.product.id}/${this.quantity}`);
       }
       if (this.type == "item") {
-        this.$router.push(`/producto/${id}/${this.quantity}`);
+        this.$router.push(`/producto/${this.product.id}/${this.quantity}`);
       }
     },
     addToCart() {
@@ -138,6 +153,11 @@ export default {
       } else {
         this.quantity = 1;
       }
+    },
+    removeFromCart() {
+      const type = this.type;
+      const type_id = parseInt(this.cartProductId);
+      this.removeItemFromCart({ type, type_id });
     },
     blockChars(event) {
       event = event ? event : window.event;
