@@ -59,7 +59,7 @@ import { mapMutations, mapGetters, mapActions } from "vuex";
 
 import ProductComponent from "../components/ProductComponent.vue";
 
-import purchaseService from "../services/purchaseService";
+import purchasesService from "../services/purchasesService";
 
 export default {
   components: { ProductComponent },
@@ -88,7 +88,7 @@ export default {
     ...mapMutations(["setCart", "purchaseCart"]),
     ...mapActions(["clearCart"]),
     purchaseThisCart() {
-      purchaseService
+      purchasesService
         .purchaseCart()
         .then(() => {
           this.clearCart();

@@ -4,22 +4,29 @@
       <h1>Hola {{ userData.firstname }} {{ userData.lastname }}!</h1>
       <div class="user-panel">
         <div class="user-panel-container">
-          <h2>Qué deseas hacer?</h2>
+          <h2>Datos de usuario:</h2>
           <button @click="changeToEditPasswordView()">
             Cambiar Contraseña
           </button>
-
           <button @click="changeToEditEmailView()">Cambiar Email</button>
-
           <button @click="changeToUserInformationView()">
             Editar Datos Personales
           </button>
+          <br />
 
+          <h2>Ver compras realizadas:</h2>
+          <button @click="changeToSeePurchasesView()">Ver compras</button>
+          <br />
+
+          <h2>Eliminar usuario:</h2>
           <button @click="changeToDeleteUserView()">
             Eliminar ésta cuenta
           </button>
+          <br />
 
+          <h2>Cerrar sesión:</h2>
           <button @click="userLogout">Cerrar Sesión</button>
+          <br />
         </div>
 
         <div class="side-panel-container">
@@ -317,6 +324,35 @@
             </div>
           </div>
 
+          <div v-if="purchasesView">
+            <h2>Compras que has realizado:</h2>
+            <ul>
+              <li v-for="purchase in purchases" :key="purchase.id">
+                <p>Fecha: {{ purchase.purchasedAt.split("T")[0] }}</p>
+                <ul v-if="purchase.cartItems.length > 0">
+                  <li v-for="product in purchase.cartItems" :key="product.id">
+                    <p>
+                      Producto:
+                      {{ product.item.title }}
+                    </p>
+                    <p>Cantidad: {{ product.quantity }}</p>
+                    <p>Precio: {{ product.item.priceWithDiscount }}</p>
+                  </li>
+                </ul>
+                <ul v-if="purchase.cartOffers">
+                  <li v-for="product in purchase.cartOffers" :key="product.id">
+                    <p>
+                      Oferta:
+                      {{ product.offer.title }}
+                    </p>
+                    <p>Cantidad: {{ product.quantity }}</p>
+                    <p>Precio: {{ product.offer.priceWithDiscount }}</p>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+
           <div v-if="deleteUserView">
             <h2>Estás seguro que deseas eliminar ésta cuenta?</h2>
             <div class="form-container">
@@ -382,6 +418,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import userService from "../services/userService";
+import purchasesService from "../services/purchasesService";
 
 export default {
   data() {
@@ -390,6 +427,7 @@ export default {
       changeEmailView: false,
       emailSentView: false,
       userInformationView: false,
+      purchasesView: false,
       deleteUserView: false,
       email: "",
       emailChange: "",
@@ -400,6 +438,7 @@ export default {
       phoneNumber: "",
       newPassword: "",
       newPasswordConfirmation: "",
+      purchases: [],
     };
   },
   computed: {
@@ -418,6 +457,7 @@ export default {
       this.userInformationView = false;
       this.changeEmailView = false;
       this.emailSentView = false;
+      this.purchasesView = false;
       this.deleteUserView = false;
       this.email = "";
       this.emailChange = "";
@@ -532,6 +572,29 @@ export default {
             console.log(statusCode, errorMessage);
           }
           this.error = errorMessage;
+        });
+    },
+
+    changeToSeePurchasesView() {
+      this.backToMainView();
+      this.purchasesView = true;
+
+      purchasesService
+        .getUserPurchases()
+        .then((res) => {
+          this.purchases = res.data;
+        })
+        .catch((err) => {
+          if (err.response.data) {
+            const statusCode = err.response.data.statusCode;
+            const errorMessage = err.response.data.message;
+            if (statusCode != 400 || statusCode != 409) {
+              console.log(statusCode, errorMessage);
+            }
+            this.error = errorMessage;
+          } else {
+            console.log(err);
+          }
         });
     },
   },
