@@ -16,6 +16,14 @@ const getUserToken = () => {
 };
 
 export default {
+  getUserPurchases() {
+    const config = {
+      headers: { Authorization: `Bearer ${getUserToken()}` },
+    };
+
+    return APIclient.get(`/purchases`, config);
+  },
+
   purchaseCart() {
     const config = {
       headers: { Authorization: `Bearer ${getUserToken()}` },
