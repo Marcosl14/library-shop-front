@@ -3,10 +3,11 @@
     <div class="main-container">
       <h1>Carrito!!!</h1>
       <div
-        v-if="cartContainsProducts && !purchaseOK && !confirmPurchase"
+        v-if="cartContainsProducts && !purchaseOK && !confirmPurchaseView"
         class="product-items-container"
       >
-        <button @click="confirmPurchase = true">Comprar Carrito</button>
+        <button @click="confirmPurchaseView = true">Comprar Carrito</button>
+        <button @click="clearCartView = true">Vaciar Carrito</button>
         <ProductComponent
           v-for="cartItem in cart.cartItems"
           :key="cartItem.item.id"
@@ -27,9 +28,9 @@
           :currentQuantity="parseInt(cartOffer.quantity) || 1"
           :type="'offer'"
         />
-        <button @click="confirmPurchase = true">Comprar Carrito</button>
+        <button @click="confirmPurchaseView = true">Comprar Carrito</button>
       </div>
-      <div v-if="confirmPurchase">
+      <div v-if="confirmPurchaseView">
         <h3>Está seguro que desea confirmar la compra del carrito?</h3>
         <h4>
           Ni bien recibamos los detalles de la compra, nos estaremos comunicando
@@ -37,7 +38,7 @@
           pago.
         </h4>
         <button @click="purchaseThisCart()">Aceptar</button>
-        <button @click="confirmPurchase = false">Cancelar</button>
+        <button @click="confirmPurchaseView = false">Cancelar</button>
       </div>
       <div v-if="purchaseOK">
         <h3>
@@ -67,7 +68,8 @@ export default {
     return {
       error: "",
       purchaseOK: false,
-      confirmPurchase: false,
+      clearCartView: false,
+      confirmPurchaseView: false,
     };
   },
   computed: {
@@ -86,22 +88,19 @@ export default {
   },
   methods: {
     ...mapMutations(["setCart", "purchaseCart"]),
-    ...mapActions(["clearCart"]),
+    ...mapActions(["clearCartView"]),
     purchaseThisCart() {
       purchasesService
         .purchaseCart()
         .then(() => {
           this.clearCart();
           this.purchaseOK = true;
-          this.confirmPurchase = false;
+          this.confirmPurchaseView = false;
         })
         .catch((err) => {
           console.log(err.response.data.statusCode, err.response.data.message);
           this.error = err.response.data.message;
         });
-    },
-    goToConfirmPurchase() {
-      this.confirmPurchase = true;
     },
   },
   created: function () {
