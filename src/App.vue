@@ -81,24 +81,40 @@ nav {
   margin-top: 2rem;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
-  border-color: var(--color-pink);
-  background-color: var(--color-pink);
-}
-
 nav a {
   display: inline-block;
+  box-shadow: inset 0px 1px 0px 0px var(--color-pink);
+  background: var(--color-red);
+  background-color: var(--color-red);
+  border-radius: 6px;
+  border: 1px solid #d02718;
+  display: inline-block;
+  cursor: pointer;
+  color: var(--color-black);
+  padding: 6px 24px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 18px;
+  text-shadow: 1px 1px 0px var(--color-pink);
+}
 
-  margin-right: 0.5rem;
-  padding: 0.5rem 0.5rem;
+nav a:hover {
+  background: linear-gradient(
+    to bottom,
+    var(--color-red) 5%,
+    var(--color-red) 100%
+  );
+  background-color: var(--color-red);
+}
 
-  background-color: var(--color-yellow);
-
-  border-style: solid;
-  border-width: 1px;
-  border-color: var(--color-black);
-  border-radius: 5px;
+nav a.router-link-exact-active {
+  box-shadow: inset 0px 1px 0px 0px var(--color-green);
+  background: var(--color-green);
+  background-color: var(--color-green);
+  border: 1px solid var(--color-green);
+  color: var(--color-black);
+  text-decoration: underline;
+  text-shadow: 1px 1px 0px var(--color-green);
 }
 
 nav div {
@@ -108,13 +124,6 @@ nav div {
 .navigation-body {
   width: 100%;
   margin-top: 0.5em;
-}
-
-@media (hover: hover) {
-  a:hover {
-    border-color: var(--color-green);
-    background-color: var(--color-green);
-  }
 }
 
 @media (min-width: 1024px) {

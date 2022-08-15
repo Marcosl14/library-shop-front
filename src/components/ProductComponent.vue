@@ -7,6 +7,7 @@
       <div class="product-text">
         <h1>{{ productTitle }}</h1>
         <h2>{{ productDescription }}</h2>
+        <h3 v-if="productCategory">Categoría: {{ productCategory }}</h3>
       </div>
       <h2>${{ product.priceWithDiscount }}</h2>
       <div v-if="product.discount > 0" class="product-discount-container">
@@ -102,23 +103,16 @@ export default {
       userExists: "userExists",
     }),
     productTitle() {
-      const productTitle = this.product.title;
-      if (productTitle) {
-        return `${
-          productTitle.charAt(0).toUpperCase() + productTitle.slice(1)
-        }!`;
-      }
-      return "";
+      const title = this.product.title || "";
+      return `${title.charAt(0).toUpperCase() + title.slice(1)}`;
     },
     productDescription() {
-      const productDescription = this.product.description;
-      if (productDescription) {
-        return `${
-          productDescription.charAt(0).toUpperCase() +
-          productDescription.slice(1)
-        }!`;
-      }
-      return "";
+      const description = this.product.description || "";
+      return `${description.charAt(0).toUpperCase() + description.slice(1)}`;
+    },
+    productCategory() {
+      const category = this.product.category ? this.product.category.name : "";
+      return `${category.charAt(0).toUpperCase() + category.slice(1)}`;
     },
   },
   methods: {
@@ -167,6 +161,9 @@ export default {
     },
     substractQuantity() {
       this.quantity--;
+    },
+    stringToUpperCaseFirstLetter(stringToConvert) {
+      `${stringToConvert.charAt(0).toUpperCase() + stringToConvert.slice(1)}!`;
     },
   },
 };
@@ -233,6 +230,11 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+.quantity-container {
+  display: flex;
+  flex-wrap: unset;
 }
 
 /* 

@@ -6,6 +6,18 @@
         <div class="side-panel-container">
           <button @click="removeFilters()">Eliminar filtros</button>
           <br />
+          <h3>Buscar:</h3>
+          <div class="search-product-container">
+            <input
+              type="text"
+              name="searchProduct"
+              v-model="searchProductString"
+            />
+            <button @click="setItemsFiltered()">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </div>
+          <br />
           <h3>Paginas:</h3>
           <div class="pages-container">
             <button :disabled="disabledReduceButton" @click="reducePage">
@@ -60,6 +72,7 @@ import { mapGetters, mapMutations } from "vuex";
 const DEFAULT_ORDER_BY = "title";
 const DEFAULT_DIR = "asc";
 const DEFAULT_PAGE = 1;
+const DEFAULT_SEARCH_PRODUCT_STRING = "";
 
 export default {
   components: {
@@ -71,6 +84,7 @@ export default {
       orderBy: DEFAULT_ORDER_BY,
       dir: DEFAULT_DIR,
       page: DEFAULT_PAGE,
+      searchProductString: DEFAULT_SEARCH_PRODUCT_STRING,
     };
   },
   computed: {
@@ -106,6 +120,7 @@ export default {
       this.orderBy = DEFAULT_ORDER_BY;
       this.dir = DEFAULT_DIR;
       this.page = 1;
+      this.searchProductString = DEFAULT_SEARCH_PRODUCT_STRING;
       this.setItems();
     },
     setItemsFiltered() {
@@ -114,6 +129,7 @@ export default {
         orderBy: this.orderBy,
         dir: this.dir,
         page: this.page,
+        searchProductString: this.searchProductString,
       });
     },
     reducePage() {
@@ -152,6 +168,12 @@ export default {
   flex-direction: column;
   width: 200px;
   margin-right: 20px;
+}
+
+.search-product-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
 }
 
 .categories-panel {

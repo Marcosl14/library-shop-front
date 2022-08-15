@@ -89,7 +89,13 @@ export default createStore({
     },
     setFilteredItems(state, params) {
       itemsService
-        .getAll(params.categoryId, params.orderBy, params.dir, params.page)
+        .getAll(
+          params.categoryId,
+          params.orderBy,
+          params.dir,
+          params.page,
+          params.searchProductString
+        )
         .then((res) => {
           this.state.items = res.data;
         })
